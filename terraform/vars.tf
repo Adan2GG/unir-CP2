@@ -61,7 +61,7 @@ variable "computer_name" {
 variable "admin_pass" {
   description = "The value of pss admin of VM"
   type        = string
-  default     = "ubuntuagg"
+  default     = "ubuntu_agg2*"
 }
 
 variable "clusteraks_name" {
