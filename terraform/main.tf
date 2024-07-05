@@ -21,27 +21,27 @@ resource "azurerm_container_registry" "acr" {
 resource "azurerm_virtual_network" "red" {
   name                = var.network_name
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 #Creamos una subred
 resource "azurerm_subnet" "subred" {
   name                 = var.subnet_name
-  resource_group_name  = azurerm_resource_group.example.name
-  virtual_network_name = azurerm_virtual_network.example.name
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.red.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
 #Creamos una interfaz de red
 resource "azurerm_network_interface" "interred" {
   name                = var.nic_name
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
+    subnet_id                     = azurerm_subnet.subred.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -49,12 +49,12 @@ resource "azurerm_network_interface" "interred" {
 #Creamos la máquina virtual
 resource "azurerm_linux_virtual_machine" "mvlinux" {
   name                = var.vm_name
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   size                = "Standard_DS1_v2"
   admin_username      = var.adminuser
   network_interface_ids = [
-    azurerm_network_interface.example.id,
+    azurerm_network_interface.interred.id,
   ]
 
   os_disk {
