@@ -82,15 +82,15 @@ resource "azurerm_linux_virtual_machine" "mvlinux" {
 #Creamos el cluster de kubernetes
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.clusteraks_name
-  location            = azurerm_resource_group.aks.location
-  resource_group_name = azurerm_resource_group.aks.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = "aks-cluster"
 
   default_node_pool {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_DS2_v2"
-    vnet_subnet_id = azurerm_subnet.aks-subnet.id
+    vnet_subnet_id = azurerm_subnet.subred.id
   }
 
   identity {
