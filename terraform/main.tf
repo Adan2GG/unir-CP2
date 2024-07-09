@@ -101,3 +101,31 @@ resource "azurerm_kubernetes_cluster" "aks" {
     environment = "Terraform AKS"
   }
 }
+
+#Asociamos el ACR con el AKS para permitir que el AKS tenga acceso al ACR.
+resource "azurerm_role_assignment" "aks_acr_pull" {
+  principal_id   = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name = "AcrPull"
+  scope         = azurerm_container_registry.acr.id
+}
+
+#Obtenemos las credenciales de ACR
+data "azurerm_container_registry" "acr" {
+  name                = azurerm_container_registry.acr.name
+  resource_group_name = azurerm_container_registry.acr.resource_group_name
+}
+
+#Creamos un secreto en Kubernetes con local-exec
+resource "null_resource" "create_k8s_secret" {
+  provisioner "local-exec" {
+    command = <<EOT
+      az aks get-credentials --resource-group ${azurerm_resource_group.example.name} --name ${azurerm_kubernetes_cluster.aks.name} --admin
+      kubectl create secret docker-registry acr-auth \
+        --docker-server=${data.azurerm_container_registry.acr.login_server} \
+        --docker-username=${data.azurerm_container_registry.acr.admin_username} \
+        --docker-password=${data.azurerm_container_registry.acr.admin_password} \
+        --docker-email=example@example.com
+    EOT
+  }
+}
+
