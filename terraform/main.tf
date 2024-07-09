@@ -119,7 +119,7 @@ data "azurerm_container_registry" "acr" {
 resource "null_resource" "create_k8s_secret" {
   provisioner "local-exec" {
     command = <<EOT
-      az aks get-credentials --resource-group ${azurerm_resource_group.example.name} --name ${azurerm_kubernetes_cluster.aks.name} --admin
+      az aks get-credentials --resource-group ${azurerm_resource_group.rg.name} --name ${azurerm_kubernetes_cluster.aks.name} --admin
       kubectl create secret docker-registry acr-auth \
         --docker-server=${data.azurerm_container_registry.acr.login_server} \
         --docker-username=${data.azurerm_container_registry.acr.admin_username} \
