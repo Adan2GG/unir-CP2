@@ -45,6 +45,13 @@ resource "azurerm_network_interface" "interred" {
     private_ip_address_allocation = "Dynamic"
   }
 }
+#Creamos una ip publica
+resource "azurerm_public_ip" "aggIpPublic" {
+  name                = "aggIpPublic"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  allocation_method   = "Dynamic"
+}
 
 #Creamos la máquina virtual
 resource "azurerm_linux_virtual_machine" "mvlinux" {
