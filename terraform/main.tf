@@ -48,8 +48,8 @@ resource "azurerm_network_interface" "interred" {
 #Creamos una ip publica
 resource "azurerm_public_ip" "aggIpPublic" {
   name                = "aggIpPublic"
-  location            = azurerm_resource_group.aggIpPublic.location
-  resource_group_name = azurerm_resource_group.aggIpPublic.name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
 }
 
