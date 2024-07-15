@@ -67,5 +67,5 @@ variable "admin_pass" {
 variable "clusteraks_name" {
   description = "The value of pss admin of VM"
   type        = string
-  default     = "akagg"
+  default     = "akaggUnir"
 }
