@@ -107,7 +107,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
   identity {
     type = "SystemAssigned"
   }
-
+  #Para evitar el error de conflicto de rangos entre CIDR y la subred
+  network_profile {
+    network_plugin = "azure"
+    service_cidr = "10.2.0.0/16"
+    dns_service_ip = "10.2.0.10"
+    docker_bridge_cidr = "172.17.0.1/16"
+  }
   tags = {
     environment = "Terraform AKS"
   }
