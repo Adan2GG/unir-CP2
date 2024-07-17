@@ -21,13 +21,6 @@ resource "azurerm_linux_virtual_machine" "mvlinux" {
     storage_account_type = "Standard_LRS"
   }
   
-  os_profile {
-    computer_name  = "hostname"
-    admin_username = var.adminuser
-    admin_password = var.admin_pass
-  }
-
-
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
