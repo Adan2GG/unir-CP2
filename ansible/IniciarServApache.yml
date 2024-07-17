@@ -1,5 +1,5 @@
 - name: Instalar y configurar Apache en máquinas Ubuntu
-  hosts: ubuntu_servers
+  hosts: webserver
   become: yes
   tasks:
     - name: Actualizar los paquetes del sistema
