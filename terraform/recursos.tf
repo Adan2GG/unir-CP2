@@ -1,3 +1,7 @@
+provider "azurerm" {
+  features {}
+}
+
 #Creamos la máquina virtual vmUbuntuagg
 resource "azurerm_linux_virtual_machine" "mvlinux" {
   name                = var.vm_name
