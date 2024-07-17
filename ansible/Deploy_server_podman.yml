@@ -1,22 +1,19 @@
----
 - name: Desplegar un servidor usando Podman en VM azure
   hosts: webserver
-  become: yes
+  become: 'yes'
   tasks:
     - name: Comprobamos estado del sistema
       apt:
-        update_cache: yes
-        
+        update_cache: 'yes'
     - name: Subimos una imagen de apache
       containers.podman.podman_image:
         name: docker.io/library/httpd
         tag: latest
         state: present
-
     - name: Ejecutamos apache en podman
       containers.podman.podman_container:
         name: apache_server
-        image: docker.io/library/httpd:latest
+        image: 'docker.io/library/httpd:latest'
         state: started
         ports:
-          - "80:80"
+          - '80:80'
