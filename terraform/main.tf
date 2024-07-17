@@ -33,6 +33,14 @@ resource "azurerm_subnet" "subred" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
+#Creamos una ip publica
+resource "azurerm_public_ip" "aggIpPublic" {
+  name                = var.ip_public_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  allocation_method   = "Dynamic"
+}
+
 #Creamos una interfaz de red 
 resource "azurerm_network_interface" "interred" {
   name                = var.nic_name
@@ -43,12 +51,7 @@ resource "azurerm_network_interface" "interred" {
     name                          = "IPPublicAGG"
     subnet_id                     = azurerm_subnet.subred.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.aggIpPublic.id
   }
 }
-#Creamos una ip publica
-resource "azurerm_public_ip" "aggIpPublic" {
-  name                = var.ip_public_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
-}
+
