@@ -41,6 +41,25 @@ resource "azurerm_public_ip" "aggIpPublic" {
   allocation_method   = "Dynamic"
 }
 
+#Creamos un grupo de seguridad para habilitar el puerto 22 por ssh
+resource "azurerm_network_security_group" "sec_grup_agg" {
+  name                = "AGG-nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
 #Creamos una interfaz de red 
 resource "azurerm_network_interface" "interred" {
   name                = var.nic_name
