@@ -6,19 +6,7 @@
     - name: Comprobamos estado del sistema
       apt:
         update_cache: yes
-
-    - name: Instalamos en vm podman por pip
-      apt:
-        name:
-          - podman
-          - python3-pip
-        state: present
-
-    - name: Instalar modulo de ansible podman
-      ansible.builtin.pip:
-        name: ansible-podman
-        executable: pip3
-
+        
     - name: Subimos una imagen de apache
       containers.podman.podman_image:
         name: docker.io/library/httpd
