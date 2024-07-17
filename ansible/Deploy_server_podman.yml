@@ -1,0 +1,34 @@
+---
+- name: Desplegar un servidor usando Podman en VM azure
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Comprobamos estado del sistema
+      apt:
+        update_cache: yes
+
+    - name: Instalamos en vm podman por pip
+      apt:
+        name:
+          - podman
+          - python3-pip
+        state: present
+
+    - name: Instalar modulo de ansible podman
+      ansible.builtin.pip:
+        name: ansible-podman
+        executable: pip3
+
+    - name: Subimos una imagen de apache
+      containers.podman.podman_image:
+        name: docker.io/library/httpd
+        tag: latest
+        state: present
+
+    - name: Ejecutamos apache en podman
+      containers.podman.podman_container:
+        name: apache_server
+        image: docker.io/library/httpd:latest
+        state: started
+        ports:
+          - "80:80"
