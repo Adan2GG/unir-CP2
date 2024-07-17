@@ -1,0 +1,18 @@
+- name: Instalar y configurar Apache en máquinas Ubuntu
+  hosts: ubuntu_servers
+  become: yes
+  tasks:
+    - name: Actualizar los paquetes del sistema
+      apt:
+        update_cache: yes
+
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Iniciar y habilitar el servicio de Apache
+      systemd:
+        name: apache2
+        state: started
+        enabled: yes
