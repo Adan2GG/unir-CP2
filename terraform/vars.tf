@@ -7,7 +7,7 @@ variable "resource_group_name" {
 variable "location" {
   description = "The Azure region where the resources will be created"
   type        = string
-  default     = "West Europe"
+  default     = "East US"
 }
 
 variable "acr_name" {
@@ -68,4 +68,10 @@ variable "clusteraks_name" {
   description = "The value of pss admin of VM"
   type        = string
   default     = "akaggUnir"
+}
+
+variable "ip_public_name" {
+  description = "The name of ip public"
+  type        = string
+  default     = "aggIpPublic"
 }
