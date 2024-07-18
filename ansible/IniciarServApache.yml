@@ -1,18 +1,26 @@
-- name: Instalar y configurar Apache en máquinas Ubuntu
-  hosts: webserver
-  become: yes
+- name: Playbook para instalar y iniciar Apache en localhost
+  hosts: localhost
+  connection: local
   tasks:
-    - name: Actualizar los paquetes del sistema
-      apt:
+    - name: Actualizar el caché de apt
+      ansible.builtin.apt:
         update_cache: yes
 
     - name: Instalar Apache
-      apt:
+      ansible.builtin.apt:
         name: apache2
         state: present
 
-    - name: Iniciar y habilitar el servicio de Apache
-      systemd:
+    - name: Iniciar el servicio de Apache
+      ansible.builtin.systemd:
         name: apache2
         state: started
         enabled: yes
+
+    - name: Verificar que Apache está funcionando
+      ansible.builtin.command: systemctl status apache2
+      register: apache_status
+
+    - name: Mostrar el estado de Apache
+      ansible.builtin.debug:
+        msg: "El estado de Apache es: {{ apache_status.stdout }}"
