@@ -1,6 +1,6 @@
 - name: Desplegar un servidor usando Podman en VM azure
   hosts: localhost
-  conection: local
+  connection: local
   become: 'yes'
   tasks:
     - name: Comprobamos estado del sistema
