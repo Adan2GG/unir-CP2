@@ -1,6 +1,7 @@
 - name: Playbook para instalar y iniciar Apache en localhost
   hosts: localhost
   connection: local
+  become: yes
   tasks:
     - name: Actualizar el caché de apt
       ansible.builtin.apt:
