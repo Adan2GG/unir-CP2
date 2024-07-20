@@ -21,10 +21,17 @@ resource "azurerm_linux_virtual_machine" "mvlinux" {
     storage_account_type = "Standard_LRS"
   }
   
+  #source_image_reference {
+   # publisher = "Canonical"
+   # offer     = "UbuntuServer"
+   # sku       = "18.04-LTS"
+   # version   = "latest"
+  #}
+
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "19_10-daily-gen2"
     version   = "latest"
   }
 
