@@ -1,0 +1,15 @@
+- name: Desplegar aplicacion Nginx en aks de azure con inventory.ini
+  hosts: aks_cluster
+  become: yes
+  tasks:
+    - name: Comprobar nginx instalado
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Ejecutar nginx en aks
+      service:
+        name: nginx
+        state: started
+        enabled: yes
