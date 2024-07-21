@@ -1,15 +1,8 @@
-- name: Desplegar aplicacion Nginx en aks de azure con inventory.ini
-  hosts: aks_cluster
-  become: yes
+- name: Deploy Nginx to AKS
+  hosts: localhost
   tasks:
-    - name: Comprobar nginx instalado
-      apt:
-        name: nginx
+    - name: Apply Nginx deployment and service
+      kubernetes.core.k8s:
         state: present
-        update_cache: yes
-
-    - name: Ejecutar nginx en aks
-      service:
-        name: nginx
-        state: started
-        enabled: yes
+        src: nginx-deployment.yml
+        kubeconfig: ~/.kube/config
