@@ -1,0 +1,13 @@
+- name: Install required Python libraries
+hosts: webservers
+become: yes
+tasks:
+- name: Ensure python3-pip is installed
+  apt:
+	name: python3-pip
+	state: present
+
+- name: Install kubernetes library
+  pip:
+	name: kubernetes
+	executable: pip3
