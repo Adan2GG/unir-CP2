@@ -1,68 +1,8 @@
-- name: Desplegar Nginx en Kubernetes
+- name: Deploy Nginx to AKS
   hosts: aks_cluster
   tasks:
-    - name: Crear archivo de despliegue de Nginx
-      copy:
-        dest: /tmp/nginx-deployment.yaml
-        content: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: nginx-deployment
-            labels:
-              app: nginx
-          spec:
-            replicas: 2
-            selector:
-              matchLabels:
-                app: nginx
-            template:
-              metadata:
-                labels:
-                  app: nginx
-              spec:
-                containers:
-                - name: nginx
-                  image: nginx:latest
-                  ports:
-                  - containerPort: 80
-
-    - name: Crear archivo de servicio de Nginx
-      copy:
-        dest: /tmp/nginx-service.yaml
-        content: |
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: nginx-service
-          spec:
-            selector:
-              app: nginx
-            ports:
-              - protocol: TCP
-                port: 80
-                targetPort: 80
-            type: LoadBalancer
-
-    - name: Aplicar despliegue de Nginx
-      k8s:
-        kubeconfig: ~/.kube/config
+    - name: Apply Nginx deployment and service
+      kubernetes.core.k8s:
         state: present
-        src: /tmp/nginx-deployment.yaml
-
-    - name: Aplicar servicio de Nginx
-      k8s:
+        src: nginx-deployment.yml
         kubeconfig: ~/.kube/config
-        state: present
-        src: /tmp/nginx-service.yaml
-
-    - name: Esperar a que el servicio de Nginx esté disponible
-      command: kubectl get svc nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-      register: nginx_ip
-      retries: 10
-      delay: 30
-      until: nginx_ip.stdout != ""
-
-    - name: Mostrar IP del servicio de Nginx
-      debug:
-        msg: "La aplicación Nginx está disponible en: {{ nginx_ip.stdout }}"
