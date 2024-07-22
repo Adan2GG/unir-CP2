@@ -34,12 +34,12 @@ resource "azurerm_subnet" "subred" {
 }
 
 #Creamos una ip publica
-resource "azurerm_public_ip" "aggIpPublic" {
-  name                = var.ip_public_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
-}
+#resource "azurerm_public_ip" "aggIpPublic" {
+#  name                = var.ip_public_name
+#  location            = azurerm_resource_group.rg.location
+#  resource_group_name = azurerm_resource_group.rg.name
+#  allocation_method   = "Dynamic"
+#}
 
 #Creamos un grupo de seguridad para habilitar el puerto 22 por ssh
 resource "azurerm_network_security_group" "sec_grup_agg" {
@@ -67,7 +67,7 @@ resource "azurerm_network_interface" "interred" {
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
-    name                          = "IPPublicAGG"
+    name                          = var.ip_public_name
     subnet_id                     = azurerm_subnet.subred.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.aggIpPublic.id
