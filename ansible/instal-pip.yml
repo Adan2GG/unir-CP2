@@ -1,5 +1,5 @@
 - name: Install required Python libraries
-hosts: webservers
+hosts: aks_cluster
 become: yes
 tasks:
 - name: Ensure python3-pip is installed
