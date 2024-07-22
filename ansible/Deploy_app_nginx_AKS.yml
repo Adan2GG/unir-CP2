@@ -1,5 +1,6 @@
 - name: Deploy Nginx to AKS
   hosts: aks_cluster
+  become: yes
   tasks:
     - name: Apply Nginx deployment and service
       kubernetes.core.k8s:
