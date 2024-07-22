@@ -10,6 +10,7 @@
           kind: Deployment
           metadata:
             name: nginx-deployment
+            namespace: default
             labels:
               app: nginx
           spec:
@@ -36,6 +37,7 @@
           kind: Service
           metadata:
             name: nginx-service
+            namespace: default
           spec:
             selector:
               app: nginx
@@ -60,7 +62,7 @@
     - name: Esperar a que el servicio de Nginx esté disponible
       command: kubectl get svc nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
       register: nginx_ip
-      retries: 10
+      retries: 5
       delay: 30
       until: nginx_ip.stdout != ""
 
