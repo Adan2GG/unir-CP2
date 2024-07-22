@@ -1,0 +1,8 @@
+- name: Deploy Nginx to AKS
+  hosts: localhost
+  tasks:
+    - name: Apply Nginx deployment and service
+      kubernetes.core.k8s:
+        state: present
+        src: nginx-deployment.yml
+        kubeconfig: ~/.kube/config
